@@ -41,7 +41,7 @@ class HomePageState extends State<HomePage> {
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.edit),
           onPressed: () {
-            container.updateUser(name:'Hoke');
+            container.updateUser(name:'Mark');
           },
         ));
   }
