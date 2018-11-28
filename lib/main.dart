@@ -1,3 +1,6 @@
+// 使用InheritedWidget的示例，参考了：https://gist.github.com/ericwindmill/f790bd2456e6489b1ab97eba246fd4c6
+// TODO 需要继续完善，更深的widget层次，增加导航，界面的切换
+
 import 'package:flutter/material.dart';
 
 void main() => runApp(new AppContainer(child: new MyApp()));
