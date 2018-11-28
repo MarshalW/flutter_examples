@@ -1,8 +1,5 @@
-# flutter_examples
+# 存放所有Flutter技术准备的实验示例
 
-A new Flutter application.
+## 版本分支
 
-## Getting Started
-
-For help getting started with Flutter, view our online
-[documentation](https://flutter.io/).
+* `hello_world`，最简单的示例，将Android studio自动生成的项目做了再次简化
