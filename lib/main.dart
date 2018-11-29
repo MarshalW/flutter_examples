@@ -3,29 +3,30 @@
 // ---
 // https://stackoverflow.com/questions/49328362/get-access-to-the-context-of-inheritedwidget/49329255#49329255
 // 上述链接的回答讲了怎么在navigator之间共享inheritedWidget
+// ---
+// https://gist.github.com/Blasanka/bc4ed7bbf546ab3c8585ede639ba1ee2
+// 参考上述链接示例，重构示例
 
 import 'package:flutter/material.dart';
+import 'package:flutter_examples/pages.dart';
+import 'state.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
   @override
-  MyAppState createState() {
-    return MyAppState();
-  }
-
-  static MyAppState of(BuildContext context){
-    return (context.inheritFromWidgetOfExactType(MyState) as MyState).data;
+  _MyAppState createState() {
+    return _MyAppState();
   }
 }
 
-class MyAppState extends State<MyApp> {
+class _MyAppState extends State<MyApp> {
 
-  String userName='Newton';
+  String userName = 'Newton';
 
-  void update({userName}){
+  void update({userName}) {
     setState(() {
-      this.userName=userName;
+      this.userName = userName;
     });
   }
 
@@ -35,7 +36,8 @@ class MyAppState extends State<MyApp> {
       home: ShowInfoPage(),
       builder: (context, child) {
         return new MyState(
-          data: this,
+          update: this.update,
+          userName: this.userName,
           child: child,
         );
       },
@@ -43,62 +45,5 @@ class MyAppState extends State<MyApp> {
   }
 }
 
-class MyState extends InheritedWidget {
-  MyState({Key key,this.data, Widget child})
-      : super(key: key, child: child);
 
-//  final String userName;
 
-  final MyAppState data;
-
-  @override
-  bool updateShouldNotify(MyState oldWidget) {
-    return oldWidget != this;
-  }
-}
-
-class ShowInfoPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final data=MyApp.of(context);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('信息展示'),
-      ),
-      body: Center(
-        child: Text('Hello world, ${data.userName}'),
-      ),
-      floatingActionButton: FloatingActionButton(
-          child: Text('编辑'),
-          onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => EditInfoPage()));
-          }),
-    );
-  }
-}
-
-class EditInfoPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final data=MyApp.of(context);
-    return Scaffold(
-      body: Center(
-        child: Text('User name: ${data.userName}'),
-      ),
-      appBar: AppBar(
-        title: Text('信息编辑'),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Text('改变'),
-        onPressed: (){
-          var userName='Smith';
-          if(data.userName=='Smith'){
-            userName='Newton';
-          }
-          data.update(userName: userName);
-        },
-      ),
-    );
-  }
-}
