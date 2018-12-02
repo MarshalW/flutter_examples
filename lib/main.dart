@@ -17,7 +17,7 @@ Future main() async {
 }
 
 Future<List> getCurrencies() async {
-  String apiUrl = 'https://api.coinmarketcap.com/v1/ticker/?limit=20';
+  String apiUrl = 'https://api.coinmarketcap.com/v1/ticker/?limit=20&convert=CNY';
   http.Response response = await http.get(apiUrl);
   return json.decode(response.body);
 }
@@ -96,12 +96,12 @@ class CryptoListWidget extends StatelessWidget {
   }
 
   RichText _getSubtitleText(String priceUsd, String percentChange1h) {
-    TextSpan priceTextWidget = new TextSpan(text: "\$$priceUsd\n", style:
+    TextSpan priceTextWidget = new TextSpan(text: "\ ¥$priceUsd\n", style:
     new TextStyle(color: Colors.black),);
     String percentChangeText = "1 hour: $percentChange1h%";
     TextSpan percentChangeTextWidget;
 
-    if(double.parse(percentChange1h) > 0) {
+    if(double.parse(percentChange1h) < 0) {
       // Currency price increased. Color percent change text green
       percentChangeTextWidget = new TextSpan(text: percentChangeText,
         style: new TextStyle(color: Colors.green),);
@@ -125,7 +125,7 @@ class CryptoListWidget extends StatelessWidget {
       leading: _getLeadingWidget(currency['name'], color),
       title: _getTitleWidget(currency['name']),
       subtitle: _getSubtitleText(
-          currency['price_usd'], currency['percent_change_1h']),
+          currency['price_cny'], currency['percent_change_1h']),
       isThreeLine: true,
     );
   }
