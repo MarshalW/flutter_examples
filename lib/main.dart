@@ -6,10 +6,13 @@
 // ---
 // https://gist.github.com/Blasanka/bc4ed7bbf546ab3c8585ede639ba1ee2
 // 参考上述链接示例，重构示例
+// ---
+// 不可将fetch写在build方法中：https://flutter.io/docs/cookbook/networking/fetch-data#5-moving-the-fetch-call-out-of-the-build-method
 
 import 'package:flutter/material.dart';
 import 'package:flutter_examples/pages.dart';
 import 'state.dart';
+import 'api.dart' as api;
 
 void main() => runApp(MyApp());
 
@@ -21,13 +24,38 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
-  String userName = 'Newton';
+  String userName = '--';
+  bool loading = true;
 
   void update({userName}) {
     setState(() {
-      this.userName = userName;
+      this.userName='--';
+      loading=true;
     });
+    api.update().then((result) {
+      if(result=='OK'){
+        load();
+      }
+    });
+  }
+
+  Future<void> load() async {
+    setState(() {
+      loading = true;
+    });
+
+    var data = await api.load();
+
+    setState(() {
+      loading = false;
+      userName = data;
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    load();
   }
 
   @override
@@ -37,13 +65,12 @@ class _MyAppState extends State<MyApp> {
       builder: (context, child) {
         return new MyState(
           update: this.update,
+          load: this.load,
           userName: this.userName,
+          loading: this.loading,
           child: child,
         );
       },
     );
   }
 }
-
-
-

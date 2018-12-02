@@ -9,8 +9,10 @@ class ShowInfoPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('信息展示'),
       ),
-      body: Center(
-        child: Text('Hello world, ${state.userName}'),
+      body: Container(
+        child: Center(
+          child: Text('Hello world, ${state.userName}, ${state.loading?' loading..':' loaded.'}'),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
           child: Text('编辑'),
@@ -28,7 +30,7 @@ class EditInfoPage extends StatelessWidget {
     final state = MyState.of(context);
     return Scaffold(
       body: Center(
-        child: Text('User name: ${state.userName}'),
+        child: Text('User name: ${state.userName}, ${state.loading?' loading':' loaded.'}'),
       ),
       appBar: AppBar(
         title: Text('信息编辑'),
@@ -36,11 +38,7 @@ class EditInfoPage extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         child: Text('改变'),
         onPressed: () {
-          var userName = 'Smith';
-          if (state.userName == 'Smith') {
-            userName = 'Newton';
-          }
-          state.update(userName: userName);
+          state.update();
         },
       ),
     );
