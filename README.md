@@ -2,7 +2,7 @@
 
 ## 版本分支
 
-* `dynamic_async_load_list`，在`asyc_load_list`分支基础上，增加上拉刷新和下拉更多，使用`InheritedWidget`存储状态
+* `dynamic_async_load_list`，在`asyc_load_list`分支基础上，增加上拉刷新（TODO 下拉更多待实现）
 * `asyc_load_list`，异步加载网络数据，并作为列表显示
 * `async_loading_inherited_widget`，增加异步加载的情况，在`navigate_with_inherited_widget`基础上实现
 * `navigate_with_inherited_widget`，路由导航的情况下，使用InheritedWidget
