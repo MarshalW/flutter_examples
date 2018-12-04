@@ -2,6 +2,7 @@
 
 ## 版本分支
 
+* `before_use_inherited_widget`，不使用InheritedWidget，更原始的方式，使用`ancestorWidgetOfExactType`
 * `asyc_load_list`，异步加载网络数据，并作为列表显示
 * `async_loading_inherited_widget`，增加异步加载的情况，在`navigate_with_inherited_widget`基础上实现
 * `navigate_with_inherited_widget`，路由导航的情况下，使用InheritedWidget
