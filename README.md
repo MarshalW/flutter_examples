@@ -2,6 +2,7 @@
 
 ## 版本分支
 
+* `dynamic_async_load_list`，在`asyc_load_list`分支基础上，增加上拉刷新和下拉更多
 * `navigate_get_state_from_ancestor`，使用`ancestorWidgetOfExactType`，导航后获取State
 * `before_use_inherited_widget`，不使用InheritedWidget，更原始的方式，使用`ancestorWidgetOfExactType`
 * `asyc_load_list`，异步加载网络数据，并作为列表显示
