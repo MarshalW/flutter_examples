@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+
+import 'api.dart' as api;
 
 class CryptoListPage extends StatefulWidget {
   @override
@@ -8,12 +8,25 @@ class CryptoListPage extends StatefulWidget {
 }
 
 class _CryptoListPageState extends State<CryptoListPage> {
-  List currencies = [];
+  List _currencies = [];
+
+  ScrollController _scrollController = new ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        _getMore();
+      }
+    });
+  }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    this.refresh();
+    this._refresh();
   }
 
   RichText _getSubtitleText(String price, String percentChange1h) {
@@ -58,18 +71,19 @@ class _CryptoListPageState extends State<CryptoListPage> {
           ),
           Flexible(
             child: RefreshIndicator(
-              onRefresh: refresh,
+              onRefresh: _refresh,
               child: ListView.builder(
-                itemCount: currencies.length,
+                controller: _scrollController,
+                itemCount: _currencies.length,
                 itemBuilder: (context, index) {
-                  final Map currency = currencies[index];
+                  final Map currency = _currencies[index];
                   return Container(
                     margin: const EdgeInsets.only(top: 5.0),
                     child: Card(
                       child: ListTile(
                         title: Text(currency['name']),
-                        subtitle: _getSubtitleText(
-                            currency['price_cny'], currency['percent_change_1h']),
+                        subtitle: _getSubtitleText(currency['price_cny'],
+                            currency['percent_change_1h']),
                         isThreeLine: true,
                       ),
                     ),
@@ -83,18 +97,17 @@ class _CryptoListPageState extends State<CryptoListPage> {
     );
   }
 
-  Future<void> refresh() async {
-    print('>>>refresh');
-    String apiUrl =
-        'https://api.coinmarketcap.com/v1/ticker/?limit=20&convert=CNY';
-    http.Response response = await http.get(apiUrl);
-    print('>>>get json results');
-    List results=json.decode(response.body);
+  Future<void> _refresh() async {
+    List results = await api.refreshData();
     setState(() {
-      print('>>>>>${results[0]['price_cny']}');
-      this.currencies=results;
+      this._currencies = results;
     });
   }
 
-  Future getMore() async {}
+  Future _getMore() async {
+    List results = await api.getMoreData(this._currencies.length);
+    setState(() {
+      this._currencies.addAll(results);
+    });
+  }
 }
