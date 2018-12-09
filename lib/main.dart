@@ -3,7 +3,7 @@
 
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(AppPage());
 
 class MyApp extends StatelessWidget {
   final String _appName = 'My Tools';
@@ -11,7 +11,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: AppPage(),
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text("Home"),
+        ),
+        body: Center(
+          child: _MyTextWidget(),
+        ),
+      ),
     );
   }
 }
@@ -33,36 +40,48 @@ class _AppPageState extends State<AppPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Home"),
-      ),
-      body: Center(
-        child: _MyTextWidget(),
-      ),
-    );
+    return MyApp();
   }
 }
 
 class _MyTextWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // 可以这样得到祖先widget的属性
-    var name = (context.ancestorWidgetOfExactType(MyApp) as MyApp)._appName;
-    // 可以这样得到祖先Widget的State对象ancestorWidgetOfExactType
-    _AppPageState state =
-        context.ancestorStateOfType(const TypeMatcher<_AppPageState>());
-
     return Column(
       children: <Widget>[
-        Text('My text widget, App name: $name, ${state._state}'),
+        Text('演示导航后获取State'),
         RaisedButton(
-          child: const Text('刷新'),
+          child: const Text('下一页'),
           onPressed: () {
-            state.updateState();
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => _ShowStatePage()));
           },
         )
       ],
+    );
+  }
+}
+
+class _ShowStatePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    _AppPageState state =
+        context.ancestorStateOfType(const TypeMatcher<_AppPageState>());
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Show state'),
+      ),
+      body: Column(
+        children: <Widget>[
+          Text('State: ${state._state}'),
+          RaisedButton(
+            child: const Text('刷新'),
+            onPressed: () {
+              state.updateState();
+            },
+          )
+        ],
+      ),
     );
   }
 }
