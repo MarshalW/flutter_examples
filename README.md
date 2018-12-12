@@ -2,6 +2,7 @@
 
 ## 版本分支
 
+* `my_render_object_widget`，编写自定义的render object widget，未完成
 * `dynamic_async_load_list`，在`asyc_load_list`分支基础上，增加上拉刷新和下拉更多
 * `navigate_get_state_from_ancestor`，使用`ancestorWidgetOfExactType`，导航后获取State
 * `before_use_inherited_widget`，不使用InheritedWidget，更原始的方式，使用`ancestorWidgetOfExactType`
