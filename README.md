@@ -2,6 +2,7 @@
 
 ## 版本分支
 
+* `helloworld_simple_rendering`，另一个简单的在rendering层做渲染的hello world，显示大字：你好，世界！
 * `custom_render_box`，用自定义RenderBox实现绘制Widget的hello world
 * `helloworld_rendering`，通过rendering api，在渲染树上显示hello world的内容
 * `helloworld_raw`，使用`dart.ui`，最底层的api渲染界面的hello world
